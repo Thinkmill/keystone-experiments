@@ -4,7 +4,9 @@
 	"main": "index.js",
 	"author": "<m@mikejam.es>",
 	"license": "MIT",
-	"scripts": {},
+	"scripts": {
+		"nodemon": "nodemon src/server.js --exec babel-node"
+	},
 	"devDependencies": {
 		"babel-cli": "^6",
 		"babel-core": "^6",
@@ -20,6 +22,10 @@
 		"babel-polyfill": "^6.23.0",
 		"body-parser": "^1.17.1",
 		"express": "^4.15.2",
-		"require-directory": "^2.1.1"
+		"leveldown": "^1.6.0",
+		"levelup": "^1.3.5",
+		"nodemon": "^1.11.0",
+		"require-directory": "^2.1.1",
+		"uuid": "^3.0.1"
 	}
 }

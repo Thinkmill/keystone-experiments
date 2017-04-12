@@ -2,11 +2,11 @@ import routesStore from './routesStore';
 import { post, get } from './decorators';
 import { Router } from 'express';
 
-export default (types) => {
+export default (types, injection) => {
 	const routes = routesStore();
 	const decorators = {
-		post: post(routes),
-		get: get(routes)
+		post: post(routes, injection),
+		get: get(routes, injection)
 	};
 
 	// requireDir gives us a map

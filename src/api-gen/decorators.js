@@ -6,18 +6,20 @@ const OPTIONS = 'OPTIONS';
 
 const HTTP_VERBS = [GET, POST, PUT, DELETE, OPTIONS];
 
-const postHandler = fn => {
-	return async function (req, res, next) {
-		const result = await fn(req.body);
-		res.send(result);
-	}
-}
-
-const wrapper = addToRoutes => routes => name => (target, key, descriptor) => {
+const wrapper = addToRoutes => (routes, injection) => name => (target, key, descriptor) => {
 	const isVerb = HTTP_VERBS.includes(key.toUpperCase());
 	const action = isVerb ? '' : name ? name : key;
 	const base = target.name.toLowerCase();
-	const fn = descriptor.value;
+
+	// to support Hapi
+	// if (action.startsWith(':')) {
+	// 	action = `{${action.substr(0,1)}}`;
+	// }
+
+
+	// to map to the same as a graphql resolver we map the following over to a familiar shape
+	const fn = args => descriptor.value(null, args, injection);
+
 	addToRoutes({ routes, action, base, fn });
 };
 
@@ -29,10 +31,9 @@ export const post = wrapper(({ routes, action, base, fn }) =>
 	})
 );
 
-
-const getHandler = fn => {
+const postHandler = fn => {
 	return async function (req, res, next) {
-		const result = await fn({...req.query, ...req.params });
+		const result = await fn({ ...req.query, ...req.params, ...req.body });
 		res.send(result);
 	}
 }
@@ -44,3 +45,14 @@ export const get = wrapper(({ routes, action, base, fn }) =>
 		handler: getHandler(fn)
 	})
 );
+
+const getHandler = fn => {
+	return async function (req, res, next) {
+		try {
+			const result = await fn({ ...req.query, ...req.params });
+			res.send(result);
+		} catch (e) {
+			res.send(500);
+		}
+	}
+}
