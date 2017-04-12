@@ -1,0 +1,25 @@
+{
+	"name": "keystone-experiments",
+	"version": "1.0.0",
+	"main": "index.js",
+	"author": "<m@mikejam.es>",
+	"license": "MIT",
+	"scripts": {},
+	"devDependencies": {
+		"babel-cli": "^6",
+		"babel-core": "^6",
+		"babel-eslint": "^7.2.1",
+		"babel-plugin-transform-decorators-legacy": "^1.3.4",
+		"babel-preset-es2015": "^6.24.1",
+		"babel-preset-stage-2": "^6",
+		"eslint-config-prettier": "^1.6.0",
+		"prettier": "^0.22.0",
+		"prettier-eslint-cli": "^3.2.0"
+	},
+	"dependencies": {
+		"babel-polyfill": "^6.23.0",
+		"body-parser": "^1.17.1",
+		"express": "^4.15.2",
+		"require-directory": "^2.1.1"
+	}
+}
