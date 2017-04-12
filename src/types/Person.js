@@ -1,8 +1,15 @@
 import uuid from 'uuid/v4';
 
-export default ({ decorators: { post, get } }) => {
-
+export default ({ decorators: { post, get, graphql } }) => {
+	console.log(graphql);
 	return class Person {
+		@graphql
+		static schema = () => ({
+			id: { type: String, required: true },
+			name: { type: String, required: true },
+			age: { type: Number, required: true },
+		});
+
 		@post()
 		static async post(_, args, context) {
 			const data = {

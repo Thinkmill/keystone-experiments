@@ -5,14 +5,15 @@ export default (types, injection) => {
 	const routes = [];
 	const decorators = {
 		post: post(routes, injection),
-		get: get(routes, injection)
+		get: get(routes, injection),
+		graphql: () => {},
 	};
 
 	// requireDir gives us a map
 	const typesArray = Object.keys(types).reduce((acc, key) => {
 		return [...acc, types[key].default];
 	}, []);
-
+	console.log(decorators);
 	typesArray.forEach(t => t({ decorators }));
 
 	const expressRoutes = new Router();

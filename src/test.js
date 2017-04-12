@@ -1,13 +1,19 @@
 let runMe;
+let g;
 
-const decorators = t => ({
-	get: (target, value, descriptor) => {
-		runMe = descriptor.value;
-	}
-})
-const get = decorators('MyTest').get;
+const get = (target, value, descriptor) => {
+	runMe = descriptor.value;
+}
+const gg = (target, value, descriptor) => {
+	g = descriptor.initializer()
+}
 
 class MyTest {
+	@gg
+	static t = () => ({
+		hi: 123
+	});
+
 	@get
 	static async get() {
 		return await Promise.resolve('test');
@@ -15,8 +21,9 @@ class MyTest {
 }
 
 async function test () {
-	const res = await runMe();
-	console.log(res);
+	// const res = await ru/nMe();
+	// console.log(res);
+	console.log(g());
 }
 
 test();
