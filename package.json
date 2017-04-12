@@ -5,6 +5,8 @@
 	"author": "<m@mikejam.es>",
 	"license": "MIT",
 	"scripts": {
+		"start": "yarn build && yarn index",
+		"build": "babel src -d dist/",
 		"nodemon": "nodemon src/server.js --exec babel-node"
 	},
 	"devDependencies": {

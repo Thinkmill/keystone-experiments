@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 const types = requireDir(module, './types');
 
 const injection = () => ({
-	leveldb: leveldb({ db: 'test' })
+	leveldb: leveldb({ db: 'testdb' })
 })
 
 app.use(getRoutes(types, injection()));

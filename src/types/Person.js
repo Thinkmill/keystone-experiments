@@ -12,12 +12,18 @@ export default ({ decorators: { post, get } }) => {
 			const id = uuid();
 
 			await context.leveldb.put(id, data);
+
 			return { id, ...data };
 		}
 
 		@get(':id')
 		static async getById(_, args, context) {
 			return context.leveldb.get(args.id);
+		}
+
+		@get(':id/birthday')
+		static async getBirthday(_, args, context) {
+			return Promise.resolve(new Date());
 		}
 	}
 }

@@ -33,8 +33,12 @@ export const post = wrapper(({ routes, action, base, fn }) =>
 
 const postHandler = fn => {
 	return async function (req, res, next) {
-		const result = await fn({ ...req.query, ...req.params, ...req.body });
-		res.send(result);
+		try {
+			const result = await fn({ ...req.query, ...req.params, ...req.body });
+			res.send(result);
+		} catch (e) {
+			res.sendStatus(500);
+		}
 	}
 }
 
@@ -52,7 +56,7 @@ const getHandler = fn => {
 			const result = await fn({ ...req.query, ...req.params });
 			res.send(result);
 		} catch (e) {
-			res.send(500);
+			next(e);
 		}
 	}
 }
