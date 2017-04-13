@@ -11,16 +11,15 @@ app.use(bodyParser.json());
 const types = requireDir(module, './types');
 
 const injection = () => ({
-	leveldb: leveldb({ db: 'testdb' })
-})
+    leveldb: leveldb({ db: 'testdb' })
+});
 
 const context = injection();
 
 app.use(getRoutes(types, context));
 
-console.log(graphQlServer(types, context));
-// app.use(graphQlServer(types, context));
+app.use(graphQlServer(types, context));
 
 app.listen(3000, () => {
-	console.log('Auto generated api serving on port', 3000)
+    console.log('Auto generated api serving on port', 3000);
 });

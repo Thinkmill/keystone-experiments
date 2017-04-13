@@ -1,36 +1,46 @@
+// @flow
 import uuid from 'uuid/v4';
+const Int = function Int () {};
 
-export default ({ decorators: { post, get, graphql } }) => {
-	console.log(graphql);
-	return class Person {
-		@graphql
-		static schema = () => ({
-			id: { type: String, required: true },
-			name: { type: String, required: true },
-			age: { type: Number, required: true },
-		});
+type Decorators = {
+  get: Function,
+  post: Function,
+  graphql: Function
+};
 
-		@post()
-		static async post(_, args, context) {
-			const data = {
-				name: args.name,
-				age: args.age
-			};
-			const id = uuid();
 
-			await context.leveldb.put(id, data);
+export default ({ decorators: { post, get, graphql } }: Decorators) => {
+    // look for naming convention
+    // @rest() // look for naming convention
+    @graphql
+    class Person {
+        static schema = {
+            id: { type: String, required: true },
+            name: { type: String, required: true },
+            age: { type: Int, required: true }
+        };
+        @post()
+        static async create (_, args, context) {
+            const data = {
+                name: args.name,
+                age: args.age
+            };
+            const id = uuid();
 
-			return { id, ...data };
-		}
+            await context.leveldb.put(id, data);
 
-		@get(':id')
-		static async getById(_, args, context) {
-			return context.leveldb.get(args.id);
-		}
+            return { id, ...data };
+        }
+        @get(':id')
+        static async get (_, args, context) {
+            return context.leveldb.get(args.id);
+        }
 
-		@get(':id/birthday')
-		static async getBirthday(_, args, context) {
-			return Promise.resolve(new Date());
-		}
-	}
-}
+        @get(':id/birthday')
+        static async getBirthday (_, args, context) {
+            return Promise.resolve(new Date());
+        }
+    }
+
+    return Person;
+};
