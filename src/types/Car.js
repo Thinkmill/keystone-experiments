@@ -2,7 +2,6 @@
 import uuid from 'uuid/v4';
 import { Int } from '../schema-types';
 
-
 type Decorators = {
   get: Function,
   post: Function,
@@ -14,18 +13,18 @@ export default ({ decorators: { post, get, graphql } }: Decorators) => {
     // look for naming convention
     // @rest() // look for naming convention
     @graphql
-    class Person {
+    class Car {
         static schema = {
             id: { type: String, required: true },
-            name: { type: String, required: true },
-            age: { type: Int, required: true }
+            model: { type: String, required: true },
+            make: { type: String, required: true }
         };
         @post()
         static async create (_, args, context) {
             const data = {
-                name: args.name,
-                age: args.age,
-                type: 'Person'
+                model: args.model,
+                make: args.make,
+                type: 'Car'
             };
             const id = uuid();
 
@@ -36,7 +35,7 @@ export default ({ decorators: { post, get, graphql } }: Decorators) => {
         @get(':id')
         static async get (_, args, context) {
             const result = await context.leveldb.get(args.id);
-            if (result.type === 'Person') {
+            if (result.type === 'Car') {
               return result;
             }
             return null;
@@ -48,5 +47,5 @@ export default ({ decorators: { post, get, graphql } }: Decorators) => {
         }
     }
 
-    return Person;
+    return Car;
 };

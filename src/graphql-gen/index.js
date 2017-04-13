@@ -68,7 +68,7 @@ const transformQueryToGraphQl = queries => {
     if (!queries.length) return '';
     return `
 			type RootQueries {
-				${queries.reduce((acc, q) => `${acc}${q}`, '')}
+				${queries.reduce((acc, q) => `${acc}${q}\n`, '')}
 			}
 		`;
 };
@@ -78,7 +78,7 @@ const transformMutationsToGraphQl = mutations => {
 
     return `
 		type RootMutations {
-			${mutations.reduce((acc, q) => `${acc}${q}`, '')}
+			${mutations.reduce((acc, q) => `${acc}${q}\n`, '')}
 		}
 	`;
 };
@@ -109,14 +109,15 @@ const transformTypeToGraphQl = typeSchema => {
     const typeNameLowerPlural = `${typeNameLower}s`;
     const outType = typeSchema.name;
     const inType = `In${typeName}`;
-    const properties = Object.keys(typeSchema.schema).map(transformFieldToGraphQl(typeSchema.schema));
+    const outProperties = Object.keys(typeSchema.schema).map(transformFieldToGraphQl(typeSchema.schema));
+    const inProperties = Object.keys(typeSchema.schema).filter(k => k !== 'id').map(transformFieldToGraphQl(typeSchema.schema));
 
     const schema = `
 		type ${outType} {
-			${properties.reduce((acc, prop) => `${acc}${prop}\n`, '')}
+			${outProperties.reduce((acc, prop) => `${acc}${prop}\n`, '')}
 		}
 		input ${inType} {
-			${properties.filter(prop => prop !== 'id').reduce((acc, prop) => `${acc}${prop}\n`, '')}
+			${inProperties.filter(prop => prop !== 'id').reduce((acc, prop) => `${acc}${prop}\n`, '')}
 		}
 	`;
 

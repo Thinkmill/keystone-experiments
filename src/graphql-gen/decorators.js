@@ -23,7 +23,12 @@ const methodNames = {
 const defaultQueries = [ 'get', 'getAll' ];
 const defaultMutations = [ 'create', 'update', 'delete' ];
 
-export const graphql = (schemas : Array<string>, queries: Array<string>, mutations: Array<string>, resolvers: Object) =>
+type Schema = {
+  name: String,
+  schema: String
+};
+
+export const graphql = (schemas : Array<Schema>, queries: Array<string>, mutations: Array<string>, resolvers: Object) =>
     (target: Object) => {
         const className = target.name.toString();
         schemas.push({
@@ -32,7 +37,7 @@ export const graphql = (schemas : Array<string>, queries: Array<string>, mutatio
         });
 
         const keys = Object.getOwnPropertyNames(target);
-        console.log('keys', keys);
+
         const defaultQueriesOnModel = keys.filter(k => {
           // console.log('method', );
           return defaultQueries.includes(k)
