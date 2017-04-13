@@ -49,11 +49,6 @@ const getSchema = (types, context) => {
     const queriesAsGraphQl = transformQueryToGraphQl(queries);
     const mutationsAsGraphQl = transformMutationsToGraphQl(mutations);
 
-    console.log('schema', [
-      ...schemasAsGraphQl,
-      rootSchema(queriesAsGraphQl, mutationsAsGraphQl, schemaDefinition(queries, mutations))
-    ]);
-
     // console.log('root', rootSchema(queriesAsGraphQl, mutationsAsGraphQl, schemaDefinition(queriesAsGraphQl, mutationsAsGraphQl)));
     return makeExecutableSchema({
         typeDefs: [
